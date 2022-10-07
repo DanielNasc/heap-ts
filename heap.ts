@@ -1,29 +1,12 @@
 export class Heap {
-    private _heap: number[] = []
-
-    private _checkFindex(findex: number) {
-        if (findex > this._heap.length || findex <= 0)
-            return false
-        return true
-    }
-
-    constructor(array?: number[]) {
-        if (!array)
-            return
-
-        this._heap = [...array] // clone array
-        
+    build(array: number[]) {
         for (let i = Math.floor(array.length/2); i >= 1; i--) {
-            this.down(i)
+            this.down(i, array)
         }
     }
 
-    get_heap() {
-        return this._heap
-    }
-
-    up(findex: number) {
-        if (!this._checkFindex(findex))
+    private up(findex: number, heap: number[]) {
+        if (!(findex > heap.length || findex <= 0))
             return
 
         // convert fanciful index to an array index
@@ -31,16 +14,16 @@ export class Heap {
         
         const parent_index = Math.floor(findex/2)
         
-        if (this._heap[findex] > this._heap[parent_index]) {
+        if (heap[findex] > heap[parent_index]) {
             // using destructuring to swap the values
-            [this._heap[findex], this._heap[parent_index]] = [this._heap[parent_index], this._heap[findex]]
+            [heap[findex], heap[parent_index]] = [heap[parent_index], heap[findex]]
             // recursive
-            this.up(parent_index + 1)
+            this.up(parent_index + 1, heap)
         }
     }
 
-    down(findex: number) {
-        if (findex < 1 || findex >= this._heap.length)
+    private down(findex: number, heap: number[]) {
+        if (findex < 1 || findex >= heap.length)
             return
 
         let child_index = findex != 1 ? findex * 2 - 1 : 1
@@ -48,31 +31,47 @@ export class Heap {
         // convert fanciful index to an array indexs
         findex--
             
-        if (this._heap[child_index] < this._heap[child_index + 1])
+        if (heap[child_index] < heap[child_index + 1])
             child_index++
      
-        if (this._heap[child_index] > this._heap[findex]) {
-            [this._heap[findex], this._heap[child_index]] = [this._heap[child_index], this._heap[findex]]
-            this.down(child_index + 1)
+        if (heap[child_index] > heap[findex]) {
+            [heap[findex], heap[child_index]] = [heap[child_index], heap[findex]]
+            this.down(child_index + 1, heap)
         }
     }
 
-    insert(value: number) {
-        this._heap.push(value)
+    insert(value: number, heap: number[]) {
+        heap.push(value)
         
-        this.up(this._heap.length)
+        this.up(heap.length, heap)
     }
 
-    remove() {
-        if (this._heap.length === 0)
+    remove(heap: number[]) {
+        if (heap.length === 0)
             return null
 
-        const element = this._heap[0]
-        this._heap[0] = this._heap[this._heap.length - 1]
-        this._heap.pop()
+        const element = heap[0]
+        heap[0] = heap[heap.length - 1]
+        heap.pop()
 
-        this.down(1)
+        this.down(1, heap)
 
         return element
+    }
+
+    heapsort(heap: number[]) {
+        const clone = [...heap]
+        const sorted: number[] = []
+        this.build(clone)
+
+        for (let i = heap.length; i > 1; i--) {
+            const elem = this.remove(clone)
+
+            if (!elem) return [];
+
+            sorted.push(elem)
+        }
+
+        return sorted
     }
 }
