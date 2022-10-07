@@ -1,12 +1,6 @@
 export class Heap {
     private _heap: number[] = []
 
-    private _checkFindex(findex: number) {
-        if (findex > this._heap.length || findex <= 0)
-            return false
-        return true
-    }
-
     constructor(array?: number[]) {
         if (!array)
             return
@@ -22,8 +16,8 @@ export class Heap {
         return this._heap
     }
 
-    up(findex: number) {
-        if (!this._checkFindex(findex))
+    private up(findex: number) {
+        if (!(findex > this._heap.length || findex <= 0))
             return
 
         // convert fanciful index to an array index
@@ -39,8 +33,8 @@ export class Heap {
         }
     }
 
-    down(findex: number) {
-        if (findex < 1 || findex >= this._heap.length)
+    private down(findex: number, heap: number[] = this._heap) {
+        if (findex < 1 || findex >= heap.length)
             return
 
         let child_index = findex != 1 ? findex * 2 - 1 : 1
@@ -48,12 +42,12 @@ export class Heap {
         // convert fanciful index to an array indexs
         findex--
             
-        if (this._heap[child_index] < this._heap[child_index + 1])
+        if (heap[child_index] < heap[child_index + 1])
             child_index++
      
-        if (this._heap[child_index] > this._heap[findex]) {
-            [this._heap[findex], this._heap[child_index]] = [this._heap[child_index], this._heap[findex]]
-            this.down(child_index + 1)
+        if (heap[child_index] > heap[findex]) {
+            [heap[findex], heap[child_index]] = [heap[child_index], heap[findex]]
+            this.down(child_index + 1, heap)
         }
     }
 
@@ -63,16 +57,31 @@ export class Heap {
         this.up(this._heap.length)
     }
 
-    remove() {
+    remove(arr: number[] = this._heap) {
         if (this._heap.length === 0)
             return null
 
-        const element = this._heap[0]
-        this._heap[0] = this._heap[this._heap.length - 1]
-        this._heap.pop()
+        const element = arr[0]
+        arr[0] = arr[arr.length - 1]
+        arr.pop()
 
-        this.down(1)
+        this.down(1, arr)
 
         return element
+    }
+
+    heapsort() {
+        const sorted: number[] = []
+        const clone = [...this._heap]
+
+        for (let i = clone.length; i > 1; i--) {
+            const elem = this.remove(clone)
+
+            if (!elem) return [] as number[]
+
+            sorted.push(elem)
+        }
+
+        return sorted
     }
 }

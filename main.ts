@@ -12,3 +12,4 @@ console.log(heap.get_heap())
     
 
 console.log(heap.get_heap())
+console.log(heap.heapsort());
