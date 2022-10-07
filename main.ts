@@ -1,9 +1,14 @@
-import { Heap } from "./heap";
+import { Heap } from "./heap"
 
-const heap = new Heap();
 const rand = [2, 234, 23, 76, 85, 24, 546]
+const heap = new Heap(rand)
 
-for (let n of rand)
-    heap.insert(n)
+console.log(heap.get_heap())
+console.log(heap.remove())
+console.log(heap.get_heap())
 
-console.log(heap.get_heap());
+ for (let n of rand)
+    heap.insert(n + 5)
+    
+
+console.log(heap.get_heap())
