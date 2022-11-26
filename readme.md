@@ -4,10 +4,10 @@
 
 Implementar em linguagem a sua escolha as operações sobre heaps:
 
-[x] Criação de um heap a partir de um vetor V;
-[x] Mudança de prioridades: algoritmos descer e subir;
-[x] Inserção e remoção;
-[x] Algoritmo Heapsort.
+- [x] Criação de um heap a partir de um vetor V;
+- [x] Mudança de prioridades: algoritmos descer e subir;
+- [x] Inserção e remoção;
+- [x] Algoritmo Heapsort.
 
 ## Como executar
 
