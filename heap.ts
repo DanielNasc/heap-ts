@@ -1,13 +1,23 @@
+/* 
+    OBS
+    Para facilitar os calculos dos indices, trato o vetor do Heap como se seu primeiro
+    indice fosse 1
+    Nas funções o chamo de heapIndex
+    Só é necessária uma pequena conversão na hora de, de fato, acessar os valores no array do heap
+*/
+
 export class Heap {
     private _heap: number[] = []
 
-    constructor(array?: number[]) {
-        if (!array)
+    constructor(V?: number[]) {
+        if (!V)
             return
+            
+        // Criar um heap a partir de um vetor V passado por parametro
 
-        this._heap = [...array] // clone array
+        this._heap = [...V] // copia os valores de V para o vetor do Heap pertencente à atual instancia da classe
         
-        for (let i = Math.floor(array.length/2); i >= 1; i--) {
+        for (let i = Math.floor(V.length/2); i >= 1; i--) {
             this.down(i)
         }
     }
@@ -16,37 +26,38 @@ export class Heap {
         return this._heap
     }
 
-    private up(findex: number) {
-        if (!(findex > this._heap.length || findex <= 0))
+    private up(heapIndex: number) {
+        if (heapIndex > this._heap.length || heapIndex <= 0)
             return
 
-        // convert fanciful index to an array index
-        findex--
+        // converter o heapIndex para um indice real
+        heapIndex--
+            
+        const parent_index = Math.floor(heapIndex/2)
         
-        const parent_index = Math.floor(findex/2)
-        
-        if (this._heap[findex] > this._heap[parent_index]) {
+
+        if (this._heap[heapIndex] > this._heap[parent_index]) {
             // using destructuring to swap the values
-            [this._heap[findex], this._heap[parent_index]] = [this._heap[parent_index], this._heap[findex]]
+            [this._heap[heapIndex], this._heap[parent_index]] = [this._heap[parent_index], this._heap[heapIndex]]
             // recursive
             this.up(parent_index + 1)
         }
     }
 
-    private down(findex: number, heap: number[] = this._heap) {
-        if (findex < 1 || findex >= heap.length)
+    private down(heapIndex: number, heap: number[] = this._heap) {
+        if (heapIndex < 1 || heapIndex >= heap.length)
             return
 
-        let child_index = findex != 1 ? findex * 2 - 1 : 1
+        let child_index = heapIndex != 1 ? heapIndex * 2 - 1 : 1
 
-        // convert fanciful index to an array indexs
-        findex--
+        // converter o heapIndex para um indice real
+        heapIndex--
             
         if (heap[child_index] < heap[child_index + 1])
             child_index++
      
-        if (heap[child_index] > heap[findex]) {
-            [heap[findex], heap[child_index]] = [heap[child_index], heap[findex]]
+        if (heap[child_index] > heap[heapIndex]) {
+            [heap[heapIndex], heap[child_index]] = [heap[child_index], heap[heapIndex]]
             this.down(child_index + 1, heap)
         }
     }

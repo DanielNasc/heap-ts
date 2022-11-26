@@ -1,15 +1,21 @@
 import { Heap } from "./heap"
 
-const rand = [2, 234, 23, 76, 85, 24, 546]
-const heap = new Heap(rand)
+const V = [18, 25, 41, 34, 14, 10, 52, 50, 48]
+console.log("[ Vetor V ] -> ", V)
 
-console.log(heap.get_heap())
-console.log(heap.remove())
-console.log(heap.get_heap())
+console.log("Criando Heap a partir de V...");
+const heap = new Heap(V)
 
- for (let n of rand)
+console.log("[ Heap ] -> ", heap.get_heap())
+console.log("Removendo um valor do Heap...");
+console.log("[ Valor Removido ] -> ", heap.remove())
+console.log("[ Heap ] -> ",heap.get_heap())
+
+ for (let n of V) {
+    const newValue = n + 5
+    console.log("Inserindo ", newValue);
     heap.insert(n + 5)
-    
+}
 
-console.log(heap.get_heap())
-console.log(heap.heapsort());
+console.log("[ Heap ] -> ",heap.get_heap())
+console.log("[ Heapsort ] -> ", heap.heapsort());
